@@ -2,8 +2,37 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
+use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\ORMSetup;
+
+use App\Controller\GraphQL;
+
+// Load environment variables
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
+// Database
+$params = [
+    'host' => $_ENV['DB_HOST'],
+    'user' => $_ENV['DB_USER'],
+    'password' => $_ENV['DB_PASS'],
+    'dbname' => $_ENV['DB_NAME'],
+    'driver' => 'pdo_mysql'
+];
+
+$entityManager = new EntityManager(
+    DriverManager::getConnection($params),
+    ORMSetup::createAttributeMetadataConfiguration([
+        __DIR__ . '/../src/Model',
+    ])
+);
+
+// Router
+$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) use ($entityManager) {
+    $r->post('/graphql', function () use ($entityManager) {
+        return GraphQL::handle($entityManager);
+    });
 });
 
 $routeInfo = $dispatcher->dispatch(

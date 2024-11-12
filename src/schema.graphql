@@ -1,0 +1,53 @@
+schema {
+  query: RootQuery
+  mutation: RootMutation
+}
+
+type RootQuery {
+  categories: [Category!]!
+  products: [Product!]!
+}
+
+type RootMutation {
+    createOrder(orderInput: String): String
+}
+
+type Category {
+    name: String!
+}
+
+type Currency {
+    label: String!
+    symbol: String
+}
+
+type Price {
+    amount: Float!
+    currency: Currency!
+}
+
+type Attribute {
+    displayValue: String!
+    value: String!
+    id: String!
+}
+
+type AttributeSet {
+    id: String!
+    items: [Attribute!]!
+    name: String!
+    type: String!
+}
+
+type Product {
+    id: String!
+    name: String!
+    inStock: Boolean!
+    gallery: [String!]!
+    description: String!
+    category: String!
+    attributes: [AttributeSet!]!
+    prices: [Price!]!
+    brand: String!
+}
+

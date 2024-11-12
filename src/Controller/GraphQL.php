@@ -7,47 +7,20 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
+use GraphQL\Utils\BuildSchema;
+use GraphQL\Error\DebugFlag;
 use RuntimeException;
 use Throwable;
 
+use App\Resolver\RootResolver;
+use App\Resolver\CategoryResolver;
+
 class GraphQL {
-    static public function handle() {
+    static public function handle($entityManager) {
         try {
-            $queryType = new ObjectType([
-                'name' => 'Query',
-                'fields' => [
-                    'echo' => [
-                        'type' => Type::string(),
-                        'args' => [
-                            'message' => ['type' => Type::string()],
-                        ],
-                        'resolve' => static fn ($rootValue, array $args): string => $rootValue['prefix'] . $args['message'],
-                    ],
-                ],
-            ]);
-        
-            $mutationType = new ObjectType([
-                'name' => 'Mutation',
-                'fields' => [
-                    'sum' => [
-                        'type' => Type::int(),
-                        'args' => [
-                            'x' => ['type' => Type::int()],
-                            'y' => ['type' => Type::int()],
-                        ],
-                        'resolve' => static fn ($calc, array $args): int => $args['x'] + $args['y'],
-                    ],
-                ],
-            ]);
-        
-            // See docs on schema options:
-            // https://webonyx.github.io/graphql-php/schema-definition/#configuration-options
-            $schema = new Schema(
-                (new SchemaConfig())
-                ->setQuery($queryType)
-                ->setMutation($mutationType)
-            );
-        
+            $contents = file_get_contents(__DIR__ . '/../schema.graphql');
+            $schema = BuildSchema::build($contents);
+
             $rawInput = file_get_contents('php://input');
             if ($rawInput === false) {
                 throw new RuntimeException('Failed to get php://input');
@@ -56,10 +29,22 @@ class GraphQL {
             $input = json_decode($rawInput, true);
             $query = $input['query'];
             $variableValues = $input['variables'] ?? null;
-        
-            $rootValue = ['prefix' => 'You said: '];
-            $result = GraphQLBase::executeQuery($schema, $query, $rootValue, null, $variableValues);
-            $output = $result->toArray();
+            
+            $rootValue = [
+                'categories' => fn($rootValue, $args, $context, $info) => (new CategoryResolver())->resolve($rootValue, $args, $context, $info),
+                'products' => fn($rootValue, $args, $context, $info) => (new ProductResolver())->resolve($rootValue, $args, $context, $info)
+            ];
+            $result = GraphQLBase::executeQuery($schema, $query, $rootValue, $entityManager, $variableValues, null, function ($objectValue, $args, $contextValue, $info) {
+                return (new RootResolver())->resolve($objectValue, $args, $contextValue, $info);
+            });
+
+            $output = null;
+            if ($_ENV['DEBUG'] === 'true') {
+                $output = $result->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE);
+            }
+            else {
+                $output = $result->toArray();
+            }
         } catch (Throwable $e) {
             $output = [
                 'error' => [
