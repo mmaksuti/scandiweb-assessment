@@ -11,19 +11,25 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;
 
 #[Entity]
-#[Table(name: 'Category')]
-class Category extends BaseModel {
+#[Table(name: 'Currency')]
+class Currency extends BaseModel {
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
 
     #[Column]
-    private string $name;
+    private string $label;
 
-    function getName(): string {
-        return $this->name;
+    #[Column]
+    private string $symbol;
+
+    function getLabel(): string {
+        return $this->label;
+    }
+
+    function getSymbol(): string {
+        return $this->symbol;
     }
 }
-
 
 ?>

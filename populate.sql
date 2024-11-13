@@ -9,7 +9,7 @@ INSERT INTO Currency (label, symbol) VALUES
 ('USD', '$');
 
 -- Insert Products
-INSERT INTO Product (product_id, name, inStock, description, brand, category_id) VALUES
+INSERT INTO Product (product_id, name, in_stock, description, brand, category_id) VALUES
 ('huarache-x-stussy-le', 'Nike Air Huarache Le', true, '<p>Great sneakers for everyday use!</p>', 'Nike x Stussy', (SELECT id FROM Category WHERE name = 'clothes')),
 ('jacket-canada-goosee', 'Jacket', true, '<p>Awesome winter jacket</p>', 'Canada Goose', (SELECT id FROM Category WHERE name = 'clothes')),
 ('ps-5', 'PlayStation 5', true, '<p>A good gaming console. Plays games of PS4! Enjoy if you can buy it mwahahahaha</p>', 'Sony', (SELECT id FROM Category WHERE name = 'tech')),
@@ -50,7 +50,7 @@ INSERT INTO AttributeSet (attribute_set_id, name, type) VALUES
 ('Touch ID in keyboard', 'Touch ID in keyboard', 'text');
 
 -- Insert Attributes
-INSERT INTO Attribute (attribute_id, attribute_set_id, displayValue, value) VALUES
+INSERT INTO Attribute (attribute_id, attribute_set_id, display_value, value) VALUES
 -- Size attributes
 ('40', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Size'), '40', '40'),
 ('41', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Size'), '41', '41'),
@@ -81,26 +81,6 @@ INSERT INTO Attribute (attribute_id, attribute_set_id, displayValue, value) VALU
 -- Touch ID attributes
 ('Yes_Touch', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'), 'Yes', 'Yes'),
 ('No_Touch', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'), 'No', 'No');
-
--- Link Products with AttributeSets
-INSERT INTO Product_AttributeSet (product_id, attribute_set_id) VALUES
--- Nike Air Huarache
-((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Size')),
--- Jacket
-((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Size')),
--- PS5
-((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Color')),
-((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Capacity')),
--- Xbox
-((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Color')),
-((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Capacity')),
--- iMac
-((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Capacity')),
-((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'With USB 3 ports')),
-((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard')),
--- iPhone
-((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Capacity')),
-((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Color'));
 
 -- Link Products with Attributes
 INSERT INTO Product_Attribute (product_id, attribute_id) VALUES
@@ -152,22 +132,22 @@ INSERT INTO GalleryItem (product_id, image_url) VALUES
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), 'https://images.canadagoose.com/image/upload/w_1333,c_scale,f_auto,q_auto:best/v1634058169/product-image/2409L_61_o.png'),
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), 'https://images.canadagoose.com/image/upload/w_1333,c_scale,f_auto,q_auto:best/v1634058159/product-image/2409L_61_p.png'),
 -- PS 5
-((SELECT id FROM Product WHERE id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/510VSJ9mWDL._SL1262_.jpg'),
-((SELECT id FROM Product WHERE id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/610%2B69ZsKCL._SL1500_.jpg'),
-((SELECT id FROM Product WHERE id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/51iPoFwQT3L._SL1230_.jpg'),
-((SELECT id FROM Product WHERE id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/61qbqFcvoNL._SL1500_.jpg'),
-((SELECT id FROM Product WHERE id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/51HCjA3rqYL._SL1230_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/510VSJ9mWDL._SL1262_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/610%2B69ZsKCL._SL1500_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/51iPoFwQT3L._SL1230_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/61qbqFcvoNL._SL1500_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), 'https://images-na.ssl-images-amazon.com/images/I/51HCjA3rqYL._SL1230_.jpg'),
 -- XBOX
-((SELECT id FROM Product WHERE id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/71vPCX0bS-L._SL1500_.jpg'),
-((SELECT id FROM Product WHERE id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/71q7JTbRTpL._SL1500_.jpg'),
-((SELECT id FROM Product WHERE id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/71iQ4HGHtsL._SL1500_.jpg'),
-((SELECT id FROM Product WHERE id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/61IYrCrBzxL._SL1500_.jpg'),
-((SELECT id FROM Product WHERE id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/61RnXmpAmIL._SL1500_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/71vPCX0bS-L._SL1500_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/71q7JTbRTpL._SL1500_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/71iQ4HGHtsL._SL1500_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/61IYrCrBzxL._SL1500_.jpg'),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), 'https://images-na.ssl-images-amazon.com/images/I/61RnXmpAmIL._SL1500_.jpg'),
 -- IMAC
-((SELECT id FROM Product WHERE id = 'apple-imac-2021'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-blue-selection-hero-202104?wid=904&hei=840&fmt=jpeg&qlt=80&.v=1617492405000'),
+((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-blue-selection-hero-202104?wid=904&hei=840&fmt=jpeg&qlt=80&.v=1617492405000'),
 -- IPHONE
-((SELECT id FROM Product WHERE id = 'apple-iphone-12-pro'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-12-pro-family-hero?wid=940&amp;hei=1112&amp;fmt=jpeg&amp;qlt=80&amp;.v=1604021663000'),
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-12-pro-family-hero?wid=940&amp;hei=1112&amp;fmt=jpeg&amp;qlt=80&amp;.v=1604021663000'),
 -- AIRPODS
-((SELECT id FROM Product WHERE id = 'apple-airpods-pro'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWP22?wid=572&hei=572&fmt=jpeg&qlt=95&.v=1591634795000'),
+((SELECT id FROM Product WHERE product_id = 'apple-airpods-pro'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWP22?wid=572&hei=572&fmt=jpeg&qlt=95&.v=1591634795000'),
 -- AIRTAG
-((SELECT id FROM Product WHERE id = 'apple-airtag'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airtag-double-select-202104?wid=445&hei=370&fmt=jpeg&qlt=95&.v=1617761672000');
+((SELECT id FROM Product WHERE product_id = 'apple-airtag'), 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airtag-double-select-202104?wid=445&hei=370&fmt=jpeg&qlt=95&.v=1617761672000');

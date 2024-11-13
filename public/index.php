@@ -21,11 +21,14 @@ $params = [
     'driver' => 'pdo_mysql'
 ];
 
+$config = ORMSetup::createAttributeMetadataConfiguration([
+    __DIR__ . '/../src/Model',
+]);
+$config->setAutoGenerateProxyClasses(true);
+
 $entityManager = new EntityManager(
     DriverManager::getConnection($params),
-    ORMSetup::createAttributeMetadataConfiguration([
-        __DIR__ . '/../src/Model',
-    ])
+    $config
 );
 
 // Router

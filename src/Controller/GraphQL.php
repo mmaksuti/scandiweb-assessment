@@ -14,6 +14,7 @@ use Throwable;
 
 use App\Resolver\RootResolver;
 use App\Resolver\CategoryResolver;
+use App\Resolver\ProductResolver;
 
 class GraphQL {
     static public function handle($entityManager) {

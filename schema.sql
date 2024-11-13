@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Attribute (
     id INT AUTO_INCREMENT PRIMARY KEY,
     attribute_id VARCHAR(255),
     attribute_set_id INT,
-    displayValue VARCHAR(255) NOT NULL,
+    display_value VARCHAR(255) NOT NULL,
     value VARCHAR(255) NOT NULL,
     FOREIGN KEY (attribute_set_id) REFERENCES AttributeSet(id)
 );
@@ -36,18 +36,11 @@ CREATE TABLE IF NOT EXISTS Product (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id VARCHAR(255),
     name VARCHAR(255) NOT NULL,
-    inStock BOOLEAN NOT NULL,
+    in_stock BOOLEAN NOT NULL,
     description TEXT NOT NULL,
     category_id INT,
     brand VARCHAR(255) NOT NULL,
     FOREIGN KEY (category_id) REFERENCES Category(id)
-);
-
-CREATE TABLE IF NOT EXISTS Product_AttributeSet (
-    product_id INT,
-    attribute_set_id INT,
-    FOREIGN KEY (product_id) REFERENCES Product(id),
-    FOREIGN KEY (attribute_set_id) REFERENCES AttributeSet(id)
 );
 
 CREATE TABLE IF NOT EXISTS Product_Attribute (
@@ -58,6 +51,7 @@ CREATE TABLE IF NOT EXISTS Product_Attribute (
 );
 
 CREATE TABLE IF NOT EXISTS GalleryItem (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT,
     image_url TEXT,
     FOREIGN KEY (product_id) REFERENCES Product(id)

@@ -18,7 +18,7 @@ type Category {
 
 type Currency {
     label: String!
-    symbol: String
+    symbol: String!
 }
 
 type Price {
