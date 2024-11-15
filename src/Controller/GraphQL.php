@@ -15,6 +15,7 @@ use Throwable;
 use App\Resolver\RootResolver;
 use App\Resolver\CategoryResolver;
 use App\Resolver\ProductResolver;
+use App\Resolver\CreateOrderResolver;
 
 class GraphQL {
     static public function handle($entityManager) {
@@ -33,7 +34,8 @@ class GraphQL {
             
             $rootValue = [
                 'categories' => fn($rootValue, $args, $context, $info) => (new CategoryResolver())->resolve($rootValue, $args, $context, $info),
-                'products' => fn($rootValue, $args, $context, $info) => (new ProductResolver())->resolve($rootValue, $args, $context, $info)
+                'products' => fn($rootValue, $args, $context, $info) => (new ProductResolver())->resolve($rootValue, $args, $context, $info),
+                'createOrder' => fn($rootValue, $args, $context, $info) => (new CreateOrderResolver())->resolve($rootValue, $args, $context, $info)
             ];
             $result = GraphQLBase::executeQuery($schema, $query, $rootValue, $entityManager, $variableValues, null, function ($objectValue, $args, $contextValue, $info) {
                 return (new RootResolver())->resolve($objectValue, $args, $contextValue, $info);

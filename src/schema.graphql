@@ -1,15 +1,37 @@
 schema {
-  query: RootQuery
-  mutation: RootMutation
+    query: RootQuery
+    mutation: RootMutation
 }
 
 type RootQuery {
-  categories: [Category!]!
-  products: [Product!]!
+    categories: [Category!]!
+    products: [Product!]!
 }
 
 type RootMutation {
-    createOrder(orderInput: String): String
+    createOrder(createOrderInput: CreateOrderInput): Order!
+}
+
+input CreateOrderInput {
+    products: [ProductInput!]!
+    currency: String!
+}
+
+input ProductInput {
+    productId: String!
+    quantity: Int!
+}
+
+type Order {
+    orderTime: Int!
+    currency: Currency!
+    orderItems: [OrderItem!]!
+}
+
+type OrderItem {
+    product: Product!
+    quantity: Int!
+    total: Float!
 }
 
 type Category {

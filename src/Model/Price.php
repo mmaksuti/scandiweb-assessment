@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\DBAL\Types\Types;
 
 #[Entity]
 #[Table(name: 'Price')]
@@ -20,7 +21,7 @@ class Price extends BaseModel {
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
 
-    #[Column]
+    #[Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private float $amount;
 
     #[ManyToOne(targetEntity: Currency::class)]

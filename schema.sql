@@ -63,3 +63,21 @@ CREATE TABLE IF NOT EXISTS Product_Price (
     FOREIGN KEY (product_id) REFERENCES Product(id),
     FOREIGN KEY (price_id) REFERENCES Price(id)
 );
+
+-- Order is a reserved keyword
+CREATE TABLE IF NOT EXISTS OrderTable (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_time DATETIME NOT NULL,
+    currency_id INT,
+    FOREIGN KEY (currency_id) REFERENCES Currency(id)
+);
+
+CREATE TABLE IF NOT EXISTS OrderItem (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES OrderTable(id),
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+);
