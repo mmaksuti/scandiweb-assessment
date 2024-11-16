@@ -1,3 +1,16 @@
 RewriteEngine On
+
+# Ensure requests are not already pointing to /public
 RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ /public/index.php [L]
+
+# First try to serve the requested file from /public directory
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
+RewriteRule ^(.*)$ /public/$1 [L]
+
+# Handle /graphql requests
+RewriteRule ^graphql$ /public/server.php [L]
+
+# For all other requests that don't exist, redirect to /public/index.html
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/index.html [L]
