@@ -1,0 +1,37 @@
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100%;
+}
+
+.navbar li {
+    font-weight: 600;
+    color: #1D1F22;
+    display: flex;
+    align-items: center;
+}
+
+.navlink {
+    font-weight: 400;
+    color: #1D1F22;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    transition: background-color 0.2s;
+}
+
+.active  {
+    font-weight: 600;
+    color: #5ECE7B;
+    cursor: default;
+    border-bottom: 2px solid #5ECE7B;
+}
+
+.navlink:hover:not(.active) {
+    background-color: rgb(236, 236, 236);
+}
