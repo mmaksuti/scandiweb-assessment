@@ -12,6 +12,12 @@ use App\Controller\GraphQL;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
+if ($_ENV['DEBUG'] === 'true') {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+}
+
 // Database
 $params = [
     'host' => $_ENV['DB_HOST'],
