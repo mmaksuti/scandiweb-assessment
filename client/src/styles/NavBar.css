@@ -14,6 +14,7 @@
 }
 
 .navlink {
+    font-size: 16px;
     font-weight: 400;
     color: #1D1F22;
     text-decoration: none;
@@ -25,10 +26,11 @@
     transition: background-color 0.2s;
 }
 
-.active  {
+.navlink.active {
+    font-size: 16px;
     font-weight: 600;
     color: #5ECE7B;
-    cursor: default;
+    pointer-events: none;
     border-bottom: 2px solid #5ECE7B;
 }
 

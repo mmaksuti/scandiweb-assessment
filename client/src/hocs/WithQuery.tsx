@@ -7,10 +7,10 @@ const withQuery = (WrappedComponent: any, query: DocumentNode, variables = {}) =
 
         return (
             <WrappedComponent
-            {...props}
-            data={data}
-            loading={loading}
-            error={error}
+                {...props}
+                data={data}
+                loading={loading}
+                error={error}
             />
         );
     };

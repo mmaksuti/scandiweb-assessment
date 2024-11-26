@@ -1,17 +1,17 @@
 .header {
     height: 80px;
-    padding-left: 101px;
-    padding-right: 101px;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.logo-image {
-    height: 41px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: calc(100vw - 202px);
+    padding-left: 101px;
+    padding-right: 101px;
+    background-color: white;
+    z-index: 100;
 }
 
 .header > * {

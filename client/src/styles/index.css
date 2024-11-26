@@ -3,4 +3,11 @@ body {
   font-family: 'Raleway', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-left: 101px;
+  padding-right: 101px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+
+  width: calc(100vw - 202px);
+  overflow-x: hidden;
 }

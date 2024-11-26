@@ -4,6 +4,8 @@ import Header from '../components/Header';
 import withQuery from '../hocs/WithQuery';
 import GET_CATEGORIES from '../graphql/GetCategories';
 import { QueryResult } from '@apollo/client';
+import ProductGrid from '../components/ProductGrid';
+import { Category } from '../models/Category';
 
 class AllRoutes extends React.Component {
     getCategoryRoutes() {
@@ -16,9 +18,9 @@ class AllRoutes extends React.Component {
             return <div>Error! {error.message}</div>;
         }
         
-        return data.categories.map((category: any) => {
+        return data.categories.map((category: Category) => {
             return (
-                <Route path={"/" + category.name} element={<div>PLACEHOLDER: {category.name}</div>}/>
+                <Route key={category.name} path={"/" + category.name} element={<ProductGrid category={category.name}/>}/>
             );
         });
     }
@@ -29,6 +31,7 @@ class AllRoutes extends React.Component {
             <Router>
                 <Header/>
                 <Routes>
+                    <Route path="/" element={<div>PLACEHOLDER: HOME</div>}/>
                     {this.getCategoryRoutes()}
                 </Routes>
             </Router>
