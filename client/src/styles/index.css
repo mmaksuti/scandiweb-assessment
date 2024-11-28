@@ -1,8 +1,11 @@
 body {
   margin: 0;
+
   font-family: 'Raleway', sans-serif;
+  color: #1D1F22;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
   padding-left: 101px;
   padding-right: 101px;
   padding-top: 80px;

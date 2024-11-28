@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import Header from '../components/Header';
 import withQuery from '../hocs/WithQuery';
 import GET_CATEGORIES from '../graphql/GetCategories';
 import { QueryResult } from '@apollo/client';
 import ProductGrid from '../components/ProductGrid';
 import { Category } from '../models/Category';
+import ProductDetailsPage from '../components/ProductDetailsPage';
 
 class AllRoutes extends React.Component {
     getCategoryRoutes() {
@@ -32,7 +33,9 @@ class AllRoutes extends React.Component {
                 <Header/>
                 <Routes>
                     <Route path="/" element={<div>PLACEHOLDER: HOME</div>}/>
+                    <Route path="/details/:id" element={<ProductDetailsPage/>}/>
                     {this.getCategoryRoutes()}
+                    {/* <Route path="*" element={<div>Page not found, <NavLink to="/">go home</NavLink></div>}/> */}
                 </Routes>
             </Router>
         );

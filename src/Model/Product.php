@@ -63,6 +63,9 @@ class Product extends BaseModel {
     #[ManyToMany(targetEntity: Price::class)]
     private Collection $prices;
 
+    #[Column]
+    private string $brand;
+
     function getId(): string {
         return $this->id;
     }
@@ -134,6 +137,10 @@ class Product extends BaseModel {
 
     function getPrices(): Collection {
         return $this->prices;
+    }
+
+    function getBrand(): string {
+        return $this->brand;
     }
 }
 

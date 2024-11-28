@@ -6,6 +6,7 @@ import { QueryResult } from '@apollo/client';
 
 import withQuery from '../hocs/WithQuery';
 import GET_CATEGORIES from '../graphql/GetCategories';
+import { Category } from '../models/Category';
 
 class NavBar extends React.Component {
     getCategories() {
@@ -17,12 +18,12 @@ class NavBar extends React.Component {
             return <div>Error! {error.message}</div>;
         }
 
-        return data.categories.map((category: any) => {
+        return data.categories.map((category: Category) => {
             return (
                 <li key={category.name} className="nav-category">
-                    <NavLink to={"/" + category.name.toLowerCase()} className={({ isActive }) => {
-                        return isActive ? "navlink active" : "navlink";
-                    }}>{category.name.toUpperCase()}</NavLink>
+                    <NavLink to={"/" + category.name.toLowerCase()} className={`navlink {isActive ? 'active' : ''}`}>
+                        {category.name}
+                    </NavLink>
                 </li>
             );
         });

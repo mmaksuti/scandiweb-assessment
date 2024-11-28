@@ -14,6 +14,23 @@
     z-index: 100;
 }
 
-.header > * {
+.navbar, .home-button, .cart-button {
     flex: 1;
+}
+
+.logo-image {
+    height: 41px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cart-button {
+    opacity: 0.5;
+}
+
+.cart-icon {
+    height: 20px;
+    margin-left: auto;
+    display: block;
 }

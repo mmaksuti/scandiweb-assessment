@@ -1,6 +1,6 @@
 import React from "react";
 import withQuery from "../hocs/WithQuery";
-import GET_PRODUCTS_SHORT from "../graphql/GetProductsShort";
+import GET_PRODUCTS from "../graphql/GetProducts";
 import { QueryResult } from "@apollo/client";
 import ProductCard from "./ProductCard";
 import { Product } from "../models/Product";
@@ -47,4 +47,4 @@ class ProductGrid extends React.Component<IProductGridProps> {
     }
 }
 
-export default withQuery(ProductGrid, GET_PRODUCTS_SHORT);
+export default withQuery(ProductGrid, GET_PRODUCTS);

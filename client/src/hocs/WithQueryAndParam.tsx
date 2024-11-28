@@ -1,9 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { DocumentNode } from "graphql";
+import { useParams } from "react-router-dom";
 
-const withQuery = (WrappedComponent: any, query: DocumentNode, variables = {}) => {
+const withQueryAndParam = (WrappedComponent: any, query: DocumentNode) => {
     return (props: any) => {
-        const { data, loading, error } = useQuery(query, { 'variables': variables });
+        const params = useParams();
+        const { data, loading, error } = useQuery(query, { 'variables': params });
 
         return (
             <WrappedComponent
@@ -16,4 +18,4 @@ const withQuery = (WrappedComponent: any, query: DocumentNode, variables = {}) =
     };
 };
 
-export default withQuery;
+export default withQueryAndParam;

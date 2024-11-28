@@ -6,6 +6,7 @@ schema {
 type RootQuery {
     categories: [Category!]!
     products: [Product!]!
+    product(id: String!): Product!
 }
 
 type RootMutation {
@@ -17,8 +18,14 @@ input CreateOrderInput {
     currency: String!
 }
 
+input ChosenAttributeInput {
+    attributeSetId: String!
+    attributeId: String!
+}
+
 input ProductInput {
     productId: String!
+    chosenAttributes: [ChosenAttributeInput!]!
     quantity: Int!
 }
 
