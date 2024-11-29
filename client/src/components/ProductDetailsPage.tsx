@@ -149,7 +149,7 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
     getAttributes(attributeSet: AttributeSet) {
         if (attributeSet.type === 'text') {
             return (
-                <div className="attribute-values">
+                <div className="attribute-values-text">
                     {attributeSet.items.map((item: Attribute) => {
                         return (
                             <div key={item.id}
@@ -171,7 +171,7 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
             );
         } else if (attributeSet.type === 'swatch') {
             return (
-                <div className="attribute-values">
+                <div className="attribute-values-swatch">
                     {attributeSet.items.map((item: Attribute) => {
                         return (
                             <div key={item.id}
@@ -289,7 +289,7 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                         <div className="product-price-label">Price:</div>
                         <div className="product-price-amount">{price.currency.symbol}{price.amount}</div>
                     </div>
-                    <button className="add-to-cart-button" onClick={
+                    <button className={`add-to-cart-button ${!product.inStock ? 'disabled' : ''}`} onClick={
                         () => {
                             if (context) {
                                 const item = {
@@ -317,7 +317,6 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
         }
 
         const product: Product = data.product;
-        
         return (
             <cartContext.Consumer>
                 {

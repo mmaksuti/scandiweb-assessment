@@ -1,14 +1,32 @@
 import React from 'react';
 
 import Routes from "./routes/AllRoutes";
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, DefaultOptions } from '@apollo/client';
 
 import { Cart } from './models/Cart';
 import { CartContext } from './models/CartContext';
 
+const defaultOptions: DefaultOptions = {
+    watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+    },
+    query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+    },
+}
+
 const client = new ApolloClient({
-  uri: 'https://mmaksuti.alwaysdata.net/graphql',
-  cache: new InMemoryCache()
+    uri: 'https://mmaksuti.alwaysdata.net/graphql',
+    cache: new InMemoryCache({
+        // do not normalize AttributeSet objects, because same id does not mean same object
+        typePolicies: {
+            AttributeSet: {
+                keyFields: false,
+            },
+        },
+    })
 });
 
 const cartContext = React.createContext<CartContext | null>(null);

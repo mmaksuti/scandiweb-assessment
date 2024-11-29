@@ -28,6 +28,30 @@
     pointer-events: none;
 }
 
+.arrow-left, .arrow-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    cursor: pointer;
+    height: 32px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.arrow-left {
+    left: 16px;
+}
+
+.arrow-right {
+    right: 16px;
+}
+
+.arrow-left.disabled, .arrow-right.disabled {
+    /* display: none; */
+    pointer-events: none;
+}
+
 .product-gallery-previews {
     width: 83px;
     position: relative;
@@ -35,6 +59,11 @@
 
 .product-gallery-previews:hover .arrow-up:not(.disabled),
 .product-gallery-previews:hover .arrow-down:not(.disabled) {
+    opacity: 1;
+}
+
+.product-gallery-carousel:hover .arrow-left:not(.disabled),
+.product-gallery-carousel:hover .arrow-right:not(.disabled) {
     opacity: 1;
 }
 
@@ -64,6 +93,7 @@
 
 .product-gallery-preview:hover:not(.selected) {
     outline: 1px solid #757575;
+    cursor: pointer;
 }
 
 .product-gallery-preview.selected {
@@ -76,28 +106,6 @@
     max-height: 480px;
     min-width: 300px;
     position: relative;
-}
-
-.arrow-left, .arrow-right {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    cursor: pointer;
-    height: 32px;
-}
-
-.arrow-left {
-    left: 16px;
-}
-
-.arrow-right {
-    right: 16px;
-}
-
-.arrow-left.disabled, .arrow-right.disabled {
-    display: none;
-    pointer-events: none;
 }
 
 .product-details-name {
@@ -114,6 +122,7 @@
 .product-details-info {
     flex: 1;
     padding-left: 69px;
+    min-width: 240px;
     max-width: 292px;
     display: flex;
     flex-direction: column;
@@ -156,17 +165,23 @@
     gap: 8px;
 }
 
-.attribute-values {
-    display: flex;
+.attribute-values-text {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
     gap: 12px;
-    justify-content: space-between;
+}
+
+.attribute-values-swatch {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+    gap: 12px;
 }
 
 .swatch-attribute {
     width: 32px;
     height: 32px;
-    flex-shrink: 0;
-
+    /* flex-shrink: 0; */
+    flex-shrink: 1;
     outline: 1px solid #e0e0e0;
     /* outline-offset: 1px; */
 
@@ -189,6 +204,10 @@
     border: none;
     height: 52px;
     cursor: pointer;
+}
+
+.add-to-cart-button.disabled {
+    display: none;
 }
 
 .text-attribute {

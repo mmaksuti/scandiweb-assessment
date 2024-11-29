@@ -99,8 +99,6 @@ INSERT INTO Product_Attribute (product_id, attribute_id) VALUES
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Medium')),
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Large')),
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Extra Large')),
-((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Black')),
-((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'White')),
 -- PS5
 ((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = 'Black')),
 ((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = '256GB')),
