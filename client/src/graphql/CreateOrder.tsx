@@ -16,7 +16,7 @@ const CREATE_ORDER = gql`
                 total,
                 chosenAttributes {
                     attributeSet {
-                        ida
+                        id
                     },
                     attribute {
                         id
