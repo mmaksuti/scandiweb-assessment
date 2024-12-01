@@ -1,5 +1,7 @@
+import { Product } from "./Product";
+
 type CartItem = {
-    productId: string;
+    product: Product;
     chosenAttributes: {[attributeSetId: string]: string};
     quantity: number;
 }

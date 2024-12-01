@@ -18,15 +18,20 @@ input CreateOrderInput {
     currency: String!
 }
 
+input ProductInput {
+    productId: String!
+    chosenAttributes: [ChosenAttributeInput!]!
+    quantity: Int!
+}
+
 input ChosenAttributeInput {
     attributeSetId: String!
     attributeId: String!
 }
 
-input ProductInput {
-    productId: String!
-    chosenAttributes: [ChosenAttributeInput!]!
-    quantity: Int!
+type ChosenAttribute {
+    attributeSet: AttributeSet!
+    attribute: Attribute!
 }
 
 type Order {
@@ -39,6 +44,7 @@ type OrderItem {
     product: Product!
     quantity: Int!
     total: Float!
+    chosenAttributes: [ChosenAttribute!]!
 }
 
 type Category {

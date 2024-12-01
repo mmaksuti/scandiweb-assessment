@@ -10,6 +10,9 @@ use App\Model\Order;
 use App\Model\Currency;
 use App\Model\Product;
 use App\Model\OrderItem;
+use App\Model\ChosenAttribute;
+use App\Model\AttributeSet;
+use App\Model\Attribute;
 
 class CreateOrderResolver implements IResolver {
     public function resolve($rootValue, array $args, $context, ResolveInfo $info) {
@@ -47,12 +50,27 @@ class CreateOrderResolver implements IResolver {
             })->first()->getAmount();
             
             $quantity = $productInputs[$i]['quantity'];
+            $chosenAttributes = $productInputs[$i]['chosenAttributes'];
 
             $orderItem = new OrderItem();
             $orderItem->setProduct($product)
                 ->setQuantity($quantity)
                 ->setOrder($order)
                 ->setTotal($price * $quantity);
+
+            for ($j = 0; $j < count($chosenAttributes); $j++) {
+                $chosenAttribute = new ChosenAttribute();
+                $attributeSet = $entityMananger->getRepository(AttributeSet::class)
+                    ->findOneBy(['id' => $chosenAttributes[$j]['attributeSetId']]);
+                $attribute = $entityMananger->getRepository(Attribute::class)
+                    ->findOneBy(['id' => $chosenAttributes[$j]['attributeId']]);
+
+                $chosenAttribute->setAttributeSet($attributeSet)
+                    ->setAttribute($attribute)
+                    ->setOrderItem($orderItem);
+                
+                $orderItem->addChosenAttribute($chosenAttribute);
+            }
 
             $order->addOrderItem($orderItem);
         }

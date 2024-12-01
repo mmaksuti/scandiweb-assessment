@@ -23,7 +23,7 @@ class ProductCard extends React.Component<IProductCardProps> {
         const { currency } = price;
 
         return (
-            <NavLink className="product-card" to={"/details/" + product.id}>
+            <NavLink className="product-card" to={"/details/" + id}>
                 <div className="product-thumbnail-container">
                     <img className={inStock ? "product-thumbnail" : "product-thumbnail out-of-stock-thumbnail"} src={gallery[0]}/>
                     { inStock ?

@@ -81,3 +81,13 @@ CREATE TABLE IF NOT EXISTS OrderItem (
     FOREIGN KEY (order_id) REFERENCES OrderTable(id),
     FOREIGN KEY (product_id) REFERENCES Product(id)
 );
+
+CREATE TABLE IF NOT EXISTS ChosenAttribute (
+    order_item_id INT,
+    attribute_set_id INT,
+    attribute_id INT,
+    FOREIGN KEY (order_item_id) REFERENCES OrderItem(id),
+    FOREIGN KEY (attribute_set_id) REFERENCES AttributeSet(id),
+    FOREIGN KEY (attribute_id) REFERENCES Attribute(id),
+    PRIMARY KEY (order_item_id, attribute_set_id, attribute_id)
+);

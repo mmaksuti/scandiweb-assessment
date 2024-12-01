@@ -3,23 +3,65 @@ import '../styles/Header.css';
 
 import NavBar from './NavBar';
 import { NavLink } from 'react-router-dom';
-import Logo from '../assets/logo.png';
-import cartIcon from '../assets/cart-icon.png';
+import Logo from '../assets/logo.svg';
+import cartIcon from '../assets/cart-icon.svg';
+import { cartContext } from '../App';
+import CartOverlay from './CartOverlay';
 
-class Header extends React.Component {
+interface IHeaderState {
+    showCartOverlay: boolean;
+}
+
+class Header extends React.Component<any, IHeaderState> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            showCartOverlay: false
+        }
+    }
+
     render() {
         return (
-            <header className="header">
-                <NavBar/>
+            <cartContext.Consumer>
+                {
+                    (context) => {
+                        let numberOfCartItems = 0;
+                        if (context) {
+                            const cart = context.cart;
+                            numberOfCartItems = cart.items.length;
+                        }
 
-                <NavLink to="/" className="home-button" >
-                    <img src={Logo} alt="logo" className="logo-image"/>
-                </NavLink>
+                        return (
+                            <header className="header">
+                                <NavBar/>
 
-                <div className="cart-button disabled">
-                    <img src={cartIcon} className="cart-icon"/>
-                </div>
-            </header>
+                                <div className="home-button-container">
+                                    <NavLink to="/" className="home-button" >
+                                        <img src={Logo} alt="logo" className="home-button-icon"/>
+                                    </NavLink>
+                                </div>
+
+                                <div className="cart-button-container">
+                                    <div className={`cart-button ${numberOfCartItems == 0 ? 'disabled' : ''}`} onClick={
+                                        () => {
+                                            this.setState({
+                                                showCartOverlay: !this.state.showCartOverlay
+                                            });
+                                        }
+                                    }>
+                                        <img src={cartIcon} className="cart-icon"/>
+                                        {numberOfCartItems > 0 && (
+                                            <div className="cart-item-number">{numberOfCartItems}</div>
+                                        )}
+                                    </div>
+                                    <CartOverlay disabled={!this.state.showCartOverlay} setDisabled={() => this.setState({showCartOverlay: false})}/>
+                                </div>
+                            </header>
+                        );
+                    }
+            }
+            </cartContext.Consumer>
         );
     }
 }

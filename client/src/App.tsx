@@ -5,17 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, DefaultOptions } from '@ap
 
 import { Cart } from './models/Cart';
 import { CartContext } from './models/CartContext';
-
-const defaultOptions: DefaultOptions = {
-    watchQuery: {
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'ignore',
-    },
-    query: {
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'all',
-    },
-}
+import { Currency } from './models/Currency';
 
 const client = new ApolloClient({
     uri: 'https://mmaksuti.alwaysdata.net/graphql',
@@ -33,21 +23,11 @@ const cartContext = React.createContext<CartContext | null>(null);
 
 interface CartState {
     cart: Cart;
-    currency: string;
 }
 
 class App extends React.Component<any, CartState> {
     constructor(props: any) {
         super(props);
-
-        let currency: string | null = null;
-        if (localStorage.getItem('currency')) {
-            currency = localStorage.getItem('currency');
-        }
-        if (!currency) {
-            currency = 'USD';
-            localStorage.setItem('currency', currency);
-        }
 
         let cart: Cart;
         if (localStorage.getItem('cart')) {
@@ -55,14 +35,14 @@ class App extends React.Component<any, CartState> {
         } else {
             cart = {
                 items: [],
-                currency: currency
+                currency: {label: 'USD', symbol: '$'} as Currency,
+                total: 0
             };
             localStorage.setItem('cart', JSON.stringify(cart));
         }
 
         this.state = {
-            cart: cart,
-            currency: currency
+            cart: cart
         };
     }
 
@@ -74,11 +54,6 @@ class App extends React.Component<any, CartState> {
                     setCart: (cart: Cart) => {
                         this.setState({ cart: cart });
                         localStorage.setItem('cart', JSON.stringify(cart));
-                    },
-                    currency: this.state.currency,
-                    setCurrency: (currency: string) => {
-                        this.setState({ currency: currency });
-                        localStorage.setItem('currency', currency);
                     }
                 }
             }>

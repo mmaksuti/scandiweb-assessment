@@ -1,8 +1,10 @@
 import { CartItem } from './CartItem';
+import { Currency } from './Currency';
 
 type Cart = {
     items: CartItem[];
-    currency: string;
+    currency: Currency;
+    total: number;
 }
 
 export type { Cart };

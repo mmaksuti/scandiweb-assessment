@@ -215,7 +215,7 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
     
     getProductDetails(context: CartContext | null, product: Product) {
         const { isScrollAtTop, isScrollAtBottom } = this.state;
-        const chosenCurrency = 'USD'; // TODO: don't hardcode this
+        const chosenCurrency = context ? context.cart.currency.label : 'USD';
         const price = product.prices.find((price: Price) => price.currency.label === chosenCurrency);
         if (!price) {
             return <></>;
@@ -293,11 +293,13 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                         () => {
                             if (context) {
                                 const item = {
-                                    productId: product.id,
+                                    product: product,
                                     chosenAttributes: this.state.selectedAttributes,
                                     quantity: 1
                                 };
                                 context.cart.items.push(item);
+                                context.cart.total += price.amount;
+                                context.cart.total = parseFloat(context.cart.total.toFixed(2));
                                 context.setCart(context.cart);
                             }
                         }

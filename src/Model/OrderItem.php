@@ -3,17 +3,19 @@
 namespace App\Model;
 
 use App\Model\BaseModel;
-use App\Model\OrderItem;
-use App\Model\Currency;
-
+use App\Model\ChosenAttribute;
+ 
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity]
 #[Table(name: 'OrderItem')]
@@ -36,6 +38,13 @@ class OrderItem extends BaseModel {
     #[Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private float $total;
 
+    #[OneToMany(targetEntity: ChosenAttribute::class, mappedBy: 'orderItem', cascade: ['persist', 'remove'])]
+    private Collection $chosenAttributes;
+
+    function __construct() {
+        $this->chosenAttributes = new ArrayCollection();
+    }
+
     function getOrder(): Order {
         return $this->order;
     }
@@ -52,6 +61,10 @@ class OrderItem extends BaseModel {
         return $this->total;
     }
 
+    function getChosenAttributes(): Collection {
+        return $this->chosenAttributes;
+    }
+    
     function setOrder(Order $order): OrderItem {
         $this->order = $order;
 
@@ -72,6 +85,12 @@ class OrderItem extends BaseModel {
 
     function setTotal(float $total): OrderItem {
         $this->total = $total;
+
+        return $this;
+    }
+
+    function addChosenAttribute(ChosenAttribute $chosenAttribute): OrderItem {
+        $this->chosenAttributes->add($chosenAttribute);
 
         return $this;
     }

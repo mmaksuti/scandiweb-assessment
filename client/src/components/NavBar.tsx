@@ -8,9 +8,9 @@ import withQuery from '../hocs/WithQuery';
 import GET_CATEGORIES from '../graphql/GetCategories';
 import { Category } from '../models/Category';
 
-class NavBar extends React.Component {
+class NavBar extends React.Component<QueryResult<any>> {
     getCategories() {
-        const { loading, error, data } = this.props as QueryResult<any>;
+        const { loading, error, data } = this.props;
 
         if (loading) {
             return <></>;

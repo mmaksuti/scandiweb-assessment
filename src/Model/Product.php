@@ -56,6 +56,7 @@ class Product extends BaseModel {
     #[ManyToMany(targetEntity: Attribute::class)]
     private Collection $attributeCollection;
     private array|null $attributes = null;
+    private array|null $attributeSetMap = null;
 
     #[JoinTable(name: 'Product_Price')]
     #[JoinColumn(name: 'product_id', referencedColumnName: 'id')]
@@ -102,18 +103,12 @@ class Product extends BaseModel {
     function getAttributes(): array {
         if ($this->attributes == null) {
             $this->attributes = [];
-           
+            $this->attributeSetMap = [];
+
             foreach ($this->attributeCollection as $attribute) {
                 $attributeSetId = $attribute->getAttributeSet()->getId();
-                
-                $attributeSetIdx = -1;
-                for ($i = 0; $i < count($this->attributes); $i++) {
-                    if ($this->attributes[$i]['id'] == $attributeSetId) {
-                        $attributeSetIdx = $i;
-                    }
-                }
 
-                if ($attributeSetIdx == -1) {
+                if (!array_key_exists($attributeSetId, $this->attributeSetMap)) {
                     $this->attributes[] = [
                         'id' => $attributeSetId,
                         'name' => $attribute->getAttributeSet()->getName(),
@@ -122,8 +117,12 @@ class Product extends BaseModel {
                     ];
 
                     $attributeSetIdx = count($this->attributes) - 1;
+                    $this->attributeSetMap[$attributeSetId] = $attributeSetIdx;
                 }
-
+                else {
+                    $attributeSetIdx = $this->attributeSetMap[$attributeSetId];
+                }
+                
                 $this->attributes[$attributeSetIdx]['items'][] = [
                     'id' => $attribute->getId(),
                     'displayValue' => $attribute->getDisplayValue(),
