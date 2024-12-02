@@ -45,21 +45,7 @@ class ProductCard extends React.Component<IProductCardProps> {
                                             e.stopPropagation();
 
                                             if (context) {
-                                                const chosenAttributes: {[attributeSetId: string]: string} = {};
-
-                                                product.attributes.forEach((attributeSet: AttributeSet) => {
-                                                    chosenAttributes[attributeSet.id] = attributeSet.items[0].id;
-                                                });
-
-                                                const item = {
-                                                    product: product,
-                                                    chosenAttributes: chosenAttributes,
-                                                    quantity: 1
-                                                };
-
-                                                context.cart.items.push(item);
-                                                context.cart.total += price.amount;
-                                                context.cart.total = parseFloat(context.cart.total.toFixed(2));
+                                                context.cart.addItem(product);
                                                 context.setCart(context.cart);
                                             }
                                         }}>

@@ -31,13 +31,10 @@ class App extends React.Component<any, CartState> {
 
         let cart: Cart;
         if (localStorage.getItem('cart')) {
-            cart = JSON.parse(localStorage.getItem('cart') as string);
+            const cartData = JSON.parse(localStorage.getItem('cart') as string);
+            cart = new Cart(cartData.items, cartData.currency);
         } else {
-            cart = {
-                items: [],
-                currency: {label: 'USD', symbol: '$'} as Currency,
-                total: 0
-            };
+            cart = new Cart([], { label: 'USD', symbol: '$' } as Currency);
             localStorage.setItem('cart', JSON.stringify(cart));
         }
 

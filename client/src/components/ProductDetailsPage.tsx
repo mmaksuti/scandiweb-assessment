@@ -292,14 +292,7 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                     <button className={`add-to-cart-button ${!product.inStock ? 'disabled' : ''}`} onClick={
                         () => {
                             if (context) {
-                                const item = {
-                                    product: product,
-                                    chosenAttributes: this.state.selectedAttributes,
-                                    quantity: 1
-                                };
-                                context.cart.items.push(item);
-                                context.cart.total += price.amount;
-                                context.cart.total = parseFloat(context.cart.total.toFixed(2));
+                                context.cart.addItem(product, this.state.selectedAttributes);
                                 context.setCart(context.cart);
                             }
                         }

@@ -29,7 +29,7 @@ class Header extends React.Component<any, IHeaderState> {
                         let numberOfCartItems = 0;
                         if (context) {
                             const cart = context.cart;
-                            numberOfCartItems = cart.items.length;
+                            numberOfCartItems = cart.getNumberOfItems();
                         }
 
                         return (
@@ -43,7 +43,7 @@ class Header extends React.Component<any, IHeaderState> {
                                 </div>
 
                                 <div className="cart-button-container">
-                                    <div className={`cart-button ${numberOfCartItems == 0 ? 'disabled' : ''}`} onClick={
+                                    <button data-testid='cart-btn' className={`cart-button ${numberOfCartItems == 0 ? 'disabled' : ''}`} onClick={
                                         () => {
                                             this.setState({
                                                 showCartOverlay: !this.state.showCartOverlay
@@ -54,8 +54,8 @@ class Header extends React.Component<any, IHeaderState> {
                                         {numberOfCartItems > 0 && (
                                             <div className="cart-item-number">{numberOfCartItems}</div>
                                         )}
-                                    </div>
-                                    <CartOverlay disabled={!this.state.showCartOverlay} setDisabled={() => this.setState({showCartOverlay: false})}/>
+                                    </button>
+                                    <CartOverlay disabled={!this.state.showCartOverlay} hideOverlay={() => this.setState({showCartOverlay: false})}/>
                                 </div>
                             </header>
                         );

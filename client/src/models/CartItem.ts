@@ -2,8 +2,12 @@ import { Product } from "./Product";
 
 type CartItem = {
     product: Product;
-    chosenAttributes: {[attributeSetId: string]: string};
+    chosenAttributes: ChosenAttributes;
     quantity: number;
 }
 
-export type { CartItem };
+type ChosenAttributes = {
+    [attributeSetId: string]: string;
+}
+
+export type { CartItem, ChosenAttributes };

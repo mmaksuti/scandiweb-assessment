@@ -14,7 +14,7 @@ import { CartItem } from '../models/CartItem';
 
 interface ICartOverlayProps {
     disabled: boolean;
-    setDisabled: () => void;
+    hideOverlay: () => void;
     mutateFunction: (options?: any) => void;
     data: any;
     loading: boolean;
@@ -98,16 +98,16 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                             <>
                                 <div className={`cart-overlay-background ${this.props.disabled ? 'disabled' : ''}`} onClick={
                                     () => {
-                                        this.props.setDisabled();
+                                        this.props.hideOverlay();
                                     }
                                 }>
                                 </div>
 
                                 <div className={`cart-overlay ${this.props.disabled ? 'disabled' : ''}`}>
-                                    <b>My Bag,</b> {context.cart.items.length == 1 ? (
-                                        <span>{context.cart.items.length} item</span>
+                                    <b>My Bag,</b> {context.cart.getNumberOfItems() == 1 ? (
+                                        <span>{context.cart.getNumberOfItems()} item</span>
                                     ) : (
-                                        <span>{context.cart.items.length} items</span>
+                                        <span>{context.cart.getNumberOfItems()} items</span>
                                     )}
                                     <div className="cart-overlay-items">
                                         {context.cart.items.map((item, index) => {
@@ -126,7 +126,6 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                                 }
                                             }
                                             
-                                            
                                             if (loading) {
                                                 console.log('Placing order...');
                                                 return;
@@ -134,9 +133,8 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
 
                                             if (data) {
                                                 context.cart.items = [];
-                                                context.cart.total = 0;
                                                 context.setCart(context.cart);
-                                                this.props.setDisabled();
+                                                this.props.hideOverlay();
                                                 return;
                                             }
 
@@ -156,11 +154,9 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                                                 context.cart.items.splice(index, 1);
                                                                 
                                                                 if (context.cart.items.length === 0) {
-                                                                    this.props.setDisabled();
+                                                                    this.props.hideOverlay();
                                                                 }
                                                             }
-                                                            context.cart.total -= price.amount;
-                                                            context.cart.total = parseFloat(context.cart.total.toFixed(2));
                                                             context.setCart(context.cart);
                                                         }}>
                                                             <img className="quantity-selector-icon" src={minusIcon}></img>
@@ -168,8 +164,6 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                                         <div className="cart-overlay-quantity-selector-quantity">{item.quantity}</div>
                                                         <button className="cart-overlay-quantity-selector-button" onClick={() => {
                                                             item.quantity += 1;
-                                                            context.cart.total += price.amount;
-                                                            context.cart.total = parseFloat(context.cart.total.toFixed(2));
                                                             context.setCart(context.cart);
                                                         }}><img className="quantity-selector-icon" src={plusIcon}></img></button>
                                                     </div>
@@ -182,7 +176,7 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                     </div>
                                     <div className="cart-overlay-total">
                                         <div className="cart-overlay-total-label">Total</div>
-                                        <div className="cart-overlay-total-amount">{context.cart.currency.symbol}{context.cart.total}</div>
+                                        <div className="cart-overlay-total-amount">{context.cart.currency.symbol}{context.cart.calculateTotal()}</div>
                                     </div>
                                     { error && <div className="cart-overlay-error">An error occurred. Please try again.</div> }
                                     <button className="cart-overlay-checkout-button" onClick={
