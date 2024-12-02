@@ -9,10 +9,10 @@ import { Product } from '../models/Product';
 import GET_PRODUCT from '../graphql/GetProduct';
 import withQueryAndParam from '../hocs/WithQueryAndParam';
 
-import arrowUp from '../assets/arrow-up.png';
-import arrowDown from '../assets/arrow-down.png';
-import arrowLeft from '../assets/arrow-left.png';
-import arrowRight from '../assets/arrow-right.png';
+import arrowUp from '../assets/arrow-up.svg';
+import arrowDown from '../assets/arrow-down.svg';
+import arrowLeft from '../assets/arrow-left.svg';
+import arrowRight from '../assets/arrow-right.svg';
 import { AttributeSet } from '../models/AttributeSet';
 import { Attribute } from '../models/Attribute';
 import { Price } from '../models/Price';

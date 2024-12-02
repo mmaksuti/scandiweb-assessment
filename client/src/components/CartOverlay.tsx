@@ -112,10 +112,18 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                     <div className="cart-overlay-items">
                                         {context.cart.items.map((item, index) => {
                                             const product = item.product;
-                                            const chosenCurrency = context.cart.currency.label;
-                                            const price = product.prices.find((price: Price) => price.currency.label === chosenCurrency);
+                                            const chosenCurrency = context.cart.currency;
+                                            let price = product.prices.find((price: Price) => price.currency.label === chosenCurrency.label);
                                             if (!price) {
-                                                return <></>; // TODO
+                                                if (product.prices.length > 0) {
+                                                    price = product.prices[0];
+                                                }
+                                                else {
+                                                    price = {
+                                                        currency: chosenCurrency,
+                                                        amount: 0
+                                                    };
+                                                }
                                             }
                                             
                                             
@@ -146,7 +154,10 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                                             item.quantity -= 1;
                                                             if (item.quantity <= 0) {
                                                                 context.cart.items.splice(index, 1);
-                                                                this.props.setDisabled();
+                                                                
+                                                                if (context.cart.items.length === 0) {
+                                                                    this.props.setDisabled();
+                                                                }
                                                             }
                                                             context.cart.total -= price.amount;
                                                             context.cart.total = parseFloat(context.cart.total.toFixed(2));
@@ -163,7 +174,7 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                                         }}><img className="quantity-selector-icon" src={plusIcon}></img></button>
                                                     </div>
                                                     <div className="cart-overlay-item-thumbnail">
-                                                        <img className="cart-overlay-item-thumbnail-image" src={product.gallery[0]}/> {/* TODO */}
+                                                        <img className="cart-overlay-item-thumbnail-image" src={product.gallery.length > 0 ? product.gallery[0] : ""}/>
                                                     </div>
                                                 </div>
                                             );

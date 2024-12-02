@@ -5,16 +5,28 @@ const GET_PRODUCTS = gql`
         products {
             id,
             name,
+            inStock,
+            gallery,
+            description,
             category,
+            attributes {
+                id,
+                name,
+                type,
+                items {
+                    displayValue,
+                    value,
+                    id
+                }
+            },
             prices {
                 amount,
                 currency {
-                    symbol,
-                    label
+                    label,
+                    symbol
                 }
             },
-            gallery,
-            inStock
+            brand
         }
     }
 `;
