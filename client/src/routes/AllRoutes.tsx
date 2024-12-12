@@ -32,7 +32,7 @@ class AllRoutes extends React.Component {
             <Router>
                 <Header/>
                 <Routes>
-                    <Route path="/" element={<div>PLACEHOLDER: HOME</div>}/>
+                    <Route path="/" element={<ProductGrid category={"all"}/>}/>
                     <Route path="/details/:id" element={<ProductDetailsPage/>}/>
                     {this.getCategoryRoutes()}
                     {/* <Route path="*" element={<div>Page not found, <NavLink to="/">go home</NavLink></div>}/> */}

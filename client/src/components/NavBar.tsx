@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import '../styles/NavBar.css';
 import { NavLink } from 'react-router-dom';
 
@@ -9,6 +9,51 @@ import GET_CATEGORIES from '../graphql/GetCategories';
 import { Category } from '../models/Category';
 
 class NavBar extends React.Component<QueryResult<any>> {
+    private navRef = createRef<HTMLUListElement>();
+    private observer: MutationObserver | null = null;
+
+    componentDidMount() {
+        this.setupObserver();
+    }
+
+    componentWillUnmount() {
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+    }
+
+    // componentDidUpdate() {
+    //     this.addDataTestId();
+    // }
+
+    setupObserver() {
+        const nav = this.navRef.current;
+        if (nav) {
+            this.observer = new MutationObserver(() => {
+                this.addDataTestId();
+            });
+
+            this.observer.observe(nav, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        }
+    }
+    addDataTestId() {
+        const navLinks = this.navRef.current?.querySelectorAll('.navlink');
+        if (navLinks) {
+            navLinks.forEach((link) => {
+                if (link.classList.contains('active')) {
+                    link.setAttribute('data-testid', 'active-category-link');
+                } else {
+                    link.setAttribute('data-testid', 'category-link');
+                }
+            });
+        }
+    }
+
     getCategories() {
         const { loading, error, data } = this.props;
 
@@ -19,9 +64,13 @@ class NavBar extends React.Component<QueryResult<any>> {
         }
 
         return data.categories.map((category: Category) => {
+            const linkRef = React.createRef<HTMLAnchorElement>();
+
             return (
                 <li key={category.name} className="nav-category">
-                    <NavLink to={"/" + category.name.toLowerCase()} className={`navlink {isActive ? 'active' : ''}`}>
+                    <NavLink ref={linkRef} to={"/" + category.name.toLowerCase()}
+                        className={({ isActive }: { isActive: boolean }) => isActive || (category.name === "all" && window.location.pathname === "/") ? 'navlink active' : 'navlink'}
+                    >
                         {category.name}
                     </NavLink>
                 </li>
@@ -32,7 +81,7 @@ class NavBar extends React.Component<QueryResult<any>> {
     render() {
         return (
             <nav className="navbar">
-                <ul>
+                <ul ref={this.navRef}>
                     {this.getCategories()}
                 </ul>
             </nav>

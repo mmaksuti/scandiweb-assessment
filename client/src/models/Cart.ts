@@ -14,7 +14,7 @@ class Cart {
     getNumberOfItems() {
         return this.items.reduce((acc, item) => acc + item.quantity, 0);
     }
-    
+
     calculateTotal() {
         return parseFloat(this.items.reduce((acc, item) => {
             const price = item.product.prices.find((price) => price.currency.label === this.currency.label);
@@ -26,7 +26,7 @@ class Cart {
         }, 0).toFixed(2));
     }
 
-    addItem(product: Product, chosenAttributes: {[attributeSetId: string]: string} = {}) {
+    addItem(product: Product, chosenAttributes: ChosenAttributes = {}) {
         // if no attributes are chosen, choose the first attribute for each attribute set
         if (Object.keys(chosenAttributes).length === 0) {
             chosenAttributes = product.attributes.reduce((acc, attributeSet) => {

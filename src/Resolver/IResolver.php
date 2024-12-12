@@ -4,8 +4,7 @@ namespace App\Resolver;
 
 use GraphQL\Type\Definition\ResolveInfo;
 
-interface IResolver {
+interface IResolver
+{
     public function resolve($objectValue, array $args, $context, ResolveInfo $info);
 }
-
-?>

@@ -6,7 +6,6 @@ use App\Model\BaseModel;
 use App\Model\OrderItem;
 use App\Model\AttributeSet;
 use App\Model\Attribute;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -17,7 +16,8 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 #[Entity]
 #[Table(name: 'ChosenAttribute')]
-class ChosenAttribute {
+class ChosenAttribute
+{
     #[Id]
     #[ManyToOne(targetEntity: AttributeSet::class)]
     #[JoinColumn(name: 'attribute_set_id', referencedColumnName: 'id')]
@@ -33,35 +33,39 @@ class ChosenAttribute {
     #[JoinColumn(name: 'order_item_id', referencedColumnName: 'id')]
     private OrderItem $orderItem;
 
-    function getAttributeSet(): AttributeSet {
+    public function getAttributeSet(): AttributeSet
+    {
         return $this->attributeSet;
     }
 
-    function getAttribute(): Attribute {
+    public function getAttribute(): Attribute
+    {
         return $this->attribute;
     }
 
-    function getOrderItem(): OrderItem {
+    public function getOrderItem(): OrderItem
+    {
         return $this->orderItem;
     }
 
-    function setAttributeSet(AttributeSet $attributeSet): ChosenAttribute {
+    public function setAttributeSet(AttributeSet $attributeSet): ChosenAttribute
+    {
         $this->attributeSet = $attributeSet;
 
         return $this;
     }
 
-    function setAttribute(Attribute $attribute): ChosenAttribute {
+    public function setAttribute(Attribute $attribute): ChosenAttribute
+    {
         $this->attribute = $attribute;
 
         return $this;
     }
 
-    function setOrderItem(OrderItem $orderItem): ChosenAttribute {
+    public function setOrderItem(OrderItem $orderItem): ChosenAttribute
+    {
         $this->orderItem = $orderItem;
 
         return $this;
     }
 }
-
-?>

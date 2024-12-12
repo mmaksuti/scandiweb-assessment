@@ -34,32 +34,35 @@ class ProductCard extends React.Component<IProductCardProps> {
 
                         const { id, name, gallery, inStock } = product;
                         const { currency } = price;
+                        const kebabCaseProductName = name.toLowerCase().replace(/ /g, "-");
 
                         return (
-                            <NavLink className="product-card" to={"/details/" + id}>
-                                <div className="product-thumbnail-container">
-                                    <img className={inStock ? "product-thumbnail" : "product-thumbnail out-of-stock-thumbnail"} src={gallery[0]}/>
-                                    { inStock ?
-                                        <div className="quick-shop-button" onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
+                            <div className="product-card" data-testid={`product-${kebabCaseProductName}`}>
+                                <NavLink className="product-card-link" to={"/details/" + id}>
+                                    <div className="product-thumbnail-container">
+                                        <img className={inStock ? "product-thumbnail" : "product-thumbnail out-of-stock-thumbnail"} src={gallery[0]}/>
+                                        { inStock ?
+                                            <div className="quick-shop-button" onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
 
-                                            if (context) {
-                                                context.cart.addItem(product);
-                                                context.setCart(context.cart);
-                                            }
-                                        }}>
-                                            <img src={quickShopIcon} className="quick-shop-icon"/>
-                                        </div>
-                                    :
-                                        <div className="out-of-stock-overlay">
-                                            OUT OF STOCK
-                                        </div>
-                                    }
-                                </div>
-                                <div className="product-name">{name}</div>
-                                <div className={inStock ? "product-price" : "product-price out-of-stock-price"}>{currency.symbol}{price.amount}</div>
-                            </NavLink>
+                                                if (context) {
+                                                    context.cart.addItem(product);
+                                                    context.setCart(context.cart);
+                                                }
+                                            }}>
+                                                <img src={quickShopIcon} className="quick-shop-icon"/>
+                                            </div>
+                                        :
+                                            <div className="out-of-stock-overlay">
+                                                OUT OF STOCK
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className="product-name">{name}</div>
+                                    <div className={inStock ? "product-price" : "product-price out-of-stock-price"}>{currency.symbol}{price.amount}</div>
+                                </NavLink>
+                            </div>
                         );
                     }
                 }

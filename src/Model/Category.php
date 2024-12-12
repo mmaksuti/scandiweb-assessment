@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Model\BaseModel;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -12,7 +11,8 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 
 #[Entity]
 #[Table(name: 'Category')]
-class Category extends BaseModel {
+class Category extends BaseModel
+{
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
@@ -20,10 +20,8 @@ class Category extends BaseModel {
     #[Column]
     private string $name;
 
-    function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 }
-
-
-?>

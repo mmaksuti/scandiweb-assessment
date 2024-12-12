@@ -5,7 +5,6 @@ namespace App\Model;
 use App\Model\BaseModel;
 use App\Model\OrderItem;
 use App\Model\Currency;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -19,7 +18,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity]
 #[Table(name: 'OrderTable')]
-class Order extends BaseModel {
+class Order extends BaseModel
+{
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
@@ -34,39 +34,45 @@ class Order extends BaseModel {
     #[OneToMany(targetEntity: OrderItem::class, mappedBy: 'order', cascade: ['persist', 'remove'])]
     private Collection $orderItems;
 
-    function __construct() {
+    public function __construct()
+    {
         $this->orderItems = new ArrayCollection();
     }
 
-    function getOrderTime(): int {
+    public function getOrderTime(): int
+    {
         return $this->orderTime->getTimestamp();
     }
 
-    function getCurrency(): Currency {
+    public function getCurrency(): Currency
+    {
         return $this->currency;
     }
 
-    function getOrderItems(): Collection {
+    public function getOrderItems(): Collection
+    {
         return $this->orderItems;
     }
 
-    function setOrderTime(int $orderTime): Order {
+    public function setOrderTime(int $orderTime): Order
+    {
         $this->orderTime = new \DateTime();
         $this->orderTime->setTimestamp($orderTime);
 
         return $this;
     }
 
-    function setCurrency(Currency $currency): Order {
+    public function setCurrency(Currency $currency): Order
+    {
         $this->currency = $currency;
 
         return $this;
     }
 
-    function addOrderItem(OrderItem $orderItem): Order {
+    public function addOrderItem(OrderItem $orderItem): Order
+    {
         $this->orderItems->add($orderItem);
 
         return $this;
     }
 }
-?>

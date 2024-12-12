@@ -205,7 +205,10 @@
 }
 
 .add-to-cart-button.disabled {
-    display: none;
+    /* display: none; */
+    /* pointer-events: none; */
+    cursor: default;
+    background-color: #d1d1d1;
 }
 
 .text-attribute {

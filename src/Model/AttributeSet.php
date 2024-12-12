@@ -4,7 +4,6 @@ namespace App\Model;
 
 use App\Model\BaseModel;
 use App\Model\Attribute;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -15,7 +14,8 @@ use Doctrine\Common\Collections\Collection;
 
 #[Entity]
 #[Table(name: 'AttributeSet')]
-class AttributeSet extends BaseModel {
+class AttributeSet extends BaseModel
+{
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
@@ -32,21 +32,23 @@ class AttributeSet extends BaseModel {
     #[OneToMany(targetEntity: Attribute::class, mappedBy: 'attributeSet')]
     private Collection $attributes;
 
-    function getId(): string {
+    public function getId(): string
+    {
         return $this->id;
     }
-    
-    function getName(): string {
+
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    function getType(): string {
+    public function getType(): string
+    {
         return $this->type;
     }
 
-    function getAttributes(): Collection {
+    public function getAttributes(): Collection
+    {
         return $this->attributes;
     }
 }
-
-?>

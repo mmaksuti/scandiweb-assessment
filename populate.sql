@@ -79,8 +79,8 @@ INSERT INTO Attribute (attribute_id, attribute_set_id, display_value, value) VAL
 ('No', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'With USB 3 ports'), 'No', 'No'),
 
 -- Touch ID attributes
-('Yes_Touch', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'), 'Yes', 'Yes'),
-('No_Touch', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'), 'No', 'No');
+('Yes', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'), 'Yes', 'Yes'),
+('No', (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'), 'No', 'No');
 
 -- Link Products with Attributes
 INSERT INTO Product_Attribute (product_id, attribute_id) VALUES
@@ -89,29 +89,42 @@ INSERT INTO Product_Attribute (product_id, attribute_id) VALUES
 ((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = '41')),
 ((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = '42')),
 ((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = '43')),
-((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = 'Green')),
-((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = 'Cyan')),
-((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = 'Blue')),
-((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = 'Black')),
-((SELECT id FROM Product WHERE product_id = 'huarache-x-stussy-le'), (SELECT id FROM Attribute WHERE attribute_id = 'White')),
 -- Jacket
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Small')),
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Medium')),
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Large')),
 ((SELECT id FROM Product WHERE product_id = 'jacket-canada-goosee'), (SELECT id FROM Attribute WHERE attribute_id = 'Extra Large')),
 -- PS5
+((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = '512G')),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = '1T')),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = 'Green')),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = 'Cyan')),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = 'Blue')),
 ((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = 'Black')),
-((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = '256GB')),
+((SELECT id FROM Product WHERE product_id = 'ps-5'), (SELECT id FROM Attribute WHERE attribute_id = 'White')),
 -- Xbox
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = 'Green')),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = 'Cyan')),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = 'Blue')),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = 'Black')),
 ((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = 'White')),
-((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = '512GB')),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = '512G')),
+((SELECT id FROM Product WHERE product_id = 'xbox-series-s'), (SELECT id FROM Attribute WHERE attribute_id = '1T')),
 -- iMac
-((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = '512G')),
-((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = 'Yes')),
-((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = 'Yes_Touch')),
+((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = '256GB')),
+((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = '512GB')),
+((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = 'Yes' AND attribute_set_id = (SELECT id FROM AttributeSet WHERE attribute_set_id = 'With USB 3 ports'))),
+((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = 'No' AND attribute_set_id = (SELECT id FROM AttributeSet WHERE attribute_set_id = 'With USB 3 ports'))),
+((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = 'Yes' AND attribute_set_id = (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'))),
+((SELECT id FROM Product WHERE product_id = 'apple-imac-2021'), (SELECT id FROM Attribute WHERE attribute_id = 'No' AND attribute_set_id = (SELECT id FROM AttributeSet WHERE attribute_set_id = 'Touch ID in keyboard'))),
 -- iPhone
-((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = '256GB')),
-((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = 'Black'));
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = '512G')),
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = '1T')),
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = 'Green')),
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = 'Cyan')),
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = 'Blue')),
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = 'Black')),
+((SELECT id FROM Product WHERE product_id = 'apple-iphone-12-pro'), (SELECT id FROM Attribute WHERE attribute_id = 'White'));
 
 -- Insert Gallery Items
 INSERT INTO GalleryItem (product_id, image_url) VALUES

@@ -4,7 +4,6 @@ namespace App\Model;
 
 use App\Model\BaseModel;
 use App\Model\Currency;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -16,7 +15,8 @@ use Doctrine\DBAL\Types\Types;
 
 #[Entity]
 #[Table(name: 'Price')]
-class Price extends BaseModel {
+class Price extends BaseModel
+{
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
@@ -28,13 +28,13 @@ class Price extends BaseModel {
     #[JoinColumn(name: 'currency_id', referencedColumnName: 'id')]
     private Currency $currency;
 
-    function getAmount(): float {
+    public function getAmount(): float
+    {
         return $this->amount;
     }
 
-    function getCurrency(): Currency {
+    public function getCurrency(): Currency
+    {
         return $this->currency;
     }
 }
-
-?>

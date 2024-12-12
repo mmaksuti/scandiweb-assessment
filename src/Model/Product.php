@@ -8,7 +8,6 @@ use App\Model\GalleryItem;
 use App\Model\Attribute;
 use App\Model\AttributeSet;
 use App\Model\Price;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -24,7 +23,8 @@ use Doctrine\Common\Collections\Collection;
 
 #[Entity]
 #[Table(name: 'Product')]
-class Product extends BaseModel {
+class Product extends BaseModel
+{
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
@@ -67,19 +67,23 @@ class Product extends BaseModel {
     #[Column]
     private string $brand;
 
-    function getId(): string {
+    public function getId(): string
+    {
         return $this->id;
     }
 
-    function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    function getInStock(): bool {
+    public function getInStock(): bool
+    {
         return $this->inStock;
     }
 
-    function getGallery(): array {
+    public function getGallery(): array
+    {
         if ($this->gallery == null) {
             $this->gallery = [];
             foreach ($this->galleryItems as $galleryItem) {
@@ -89,18 +93,21 @@ class Product extends BaseModel {
         return $this->gallery;
     }
 
-    function getDescription(): string {
+    public function getDescription(): string
+    {
         return $this->description;
     }
 
-    function getCategory(): string {
+    public function getCategory(): string
+    {
         if ($this->category == null) {
             $this->category = $this->categoryObject->getName();
         }
         return $this->category;
     }
 
-    function getAttributes(): array {
+    public function getAttributes(): array
+    {
         if ($this->attributes == null) {
             $this->attributes = [];
             $this->attributeSetMap = [];
@@ -118,11 +125,10 @@ class Product extends BaseModel {
 
                     $attributeSetIdx = count($this->attributes) - 1;
                     $this->attributeSetMap[$attributeSetId] = $attributeSetIdx;
-                }
-                else {
+                } else {
                     $attributeSetIdx = $this->attributeSetMap[$attributeSetId];
                 }
-                
+
                 $this->attributes[$attributeSetIdx]['items'][] = [
                     'id' => $attribute->getId(),
                     'displayValue' => $attribute->getDisplayValue(),
@@ -134,13 +140,13 @@ class Product extends BaseModel {
         return $this->attributes;
     }
 
-    function getPrices(): Collection {
+    public function getPrices(): Collection
+    {
         return $this->prices;
     }
 
-    function getBrand(): string {
+    public function getBrand(): string
+    {
         return $this->brand;
     }
 }
-
-?>

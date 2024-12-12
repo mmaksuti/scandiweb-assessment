@@ -3,13 +3,11 @@
     transition: box-shadow 0.2s;
     cursor: pointer;
     position: relative;
-    text-decoration: none;
-    color: black;
 }
 
-.product-link {
-    display: block;
-    height: 100%;
+.product-card-link {
+    text-decoration: none;
+    color: #1D1F22;
 }
 
 .product-thumbnail {

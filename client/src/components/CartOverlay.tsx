@@ -27,9 +27,13 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
             return (
                 <div className="cart-overlay-attribute-values-text">
                     {attributeSet.items.map((item: Attribute) => {
+                        const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
+                        const kebabCaseAttributeName = item.value.replace(/ /g, '-');//.toLowerCase();
+                    
                         return (
                             <div key={item.id}
                                 className={`cart-overlay-text-attribute ${context.cart.items[productIdx].chosenAttributes[attributeSet.id] === item.id ? 'selected' : ''}`}
+                                data-testid={`cart-item-attribute-${kebabCaseAttributeSetName}-${kebabCaseAttributeName}`}
                                 onClick={() =>
                                     {
                                         context.cart.items[productIdx].chosenAttributes[attributeSet.id] = item.id;
@@ -47,9 +51,13 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
             return (
                 <div className="cart-overlay-attribute-values-swatch">
                     {attributeSet.items.map((item: Attribute) => {
+                        const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
+                        const kebabCaseAttributeName = item.value.replace(/ /g, '-');//.toLowerCase();
+
                         return (
                             <div key={item.id}
                                 className={`cart-overlay-swatch-attribute ${context.cart.items[productIdx].chosenAttributes[attributeSet.id] === item.id ? 'selected' : ''}`}
+                                data-testid={`cart-item-attribute-${kebabCaseAttributeSetName}-${kebabCaseAttributeName}${context.cart.items[productIdx].chosenAttributes[attributeSet.id] === item.id ? '-selected' : ''}`}
                                 style={{
                                     backgroundColor: item.value, 
                                 }}
@@ -72,8 +80,10 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
         const product = context.cart.items[productIdx].product;
 
         return product.attributes.map((attributeSet: AttributeSet) => {
+            const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
+            
             return (
-                <div key={attributeSet.id} className="cart-overlay-attribute">
+                <div key={attributeSet.id} className="cart-overlay-attribute" data-testid={`cart-item-attribute-${kebabCaseAttributeSetName}`}>
                     <div className="cart-overlay-attribute-name">{attributeSet.name}:</div>
                     {
                         this.getAttributes(context, productIdx, attributeSet)
@@ -103,11 +113,11 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                 }>
                                 </div>
 
-                                <div className={`cart-overlay ${this.props.disabled ? 'disabled' : ''}`}>
+                                <div data-testid="cart-overlay" className={`cart-overlay ${this.props.disabled ? 'disabled' : ''}`}>
                                     <b>My Bag,</b> {context.cart.getNumberOfItems() == 1 ? (
-                                        <span>{context.cart.getNumberOfItems()} item</span>
+                                        <span data-testid='cart-item-amount'>{context.cart.getNumberOfItems()} item</span>
                                     ) : (
-                                        <span>{context.cart.getNumberOfItems()} items</span>
+                                        <span data-testid='cart-item-amount'>{context.cart.getNumberOfItems()} items</span>
                                     )}
                                     <div className="cart-overlay-items">
                                         {context.cart.items.map((item, index) => {
@@ -148,24 +158,34 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                                         }
                                                     </div>
                                                     <div className="cart-overlay-quantity-selector">
-                                                        <button className="cart-overlay-quantity-selector-button" onClick={() => {
-                                                            item.quantity -= 1;
-                                                            if (item.quantity <= 0) {
-                                                                context.cart.items.splice(index, 1);
-                                                                
-                                                                if (context.cart.items.length === 0) {
-                                                                    this.props.hideOverlay();
+                                                        <button className="cart-overlay-quantity-selector-button" 
+                                                            data-testid='cart-item-amount-decrease'
+                                                            onClick={() => {
+                                                                item.quantity -= 1;
+                                                                if (item.quantity <= 0) {
+                                                                    context.cart.items.splice(index, 1);
+                                                                    
+                                                                    if (context.cart.items.length === 0) {
+                                                                        this.props.hideOverlay();
+                                                                    }
                                                                 }
-                                                            }
-                                                            context.setCart(context.cart);
-                                                        }}>
-                                                            <img className="quantity-selector-icon" src={minusIcon}></img>
+                                                                context.setCart(context.cart);
+                                                            }}
+                                                        >
+                                                            <img className="quantity-selector-icon" src={minusIcon}/>
                                                         </button>
+
                                                         <div className="cart-overlay-quantity-selector-quantity">{item.quantity}</div>
-                                                        <button className="cart-overlay-quantity-selector-button" onClick={() => {
-                                                            item.quantity += 1;
-                                                            context.setCart(context.cart);
-                                                        }}><img className="quantity-selector-icon" src={plusIcon}></img></button>
+
+                                                        <button className="cart-overlay-quantity-selector-button"
+                                                            data-testid='cart-item-amount-increase'
+                                                            onClick={() => {
+                                                                item.quantity += 1;
+                                                                context.setCart(context.cart);
+                                                            }}
+                                                        >
+                                                        <img className="quantity-selector-icon" src={plusIcon}/>
+                                                        </button>
                                                     </div>
                                                     <div className="cart-overlay-item-thumbnail">
                                                         <img className="cart-overlay-item-thumbnail-image" src={product.gallery.length > 0 ? product.gallery[0] : ""}/>
@@ -176,7 +196,7 @@ class CartOverlay extends React.Component<ICartOverlayProps> {
                                     </div>
                                     <div className="cart-overlay-total">
                                         <div className="cart-overlay-total-label">Total</div>
-                                        <div className="cart-overlay-total-amount">{context.cart.currency.symbol}{context.cart.calculateTotal()}</div>
+                                        <div className="cart-overlay-total-amount" data-testid='cart-total'>{context.cart.currency.symbol}{context.cart.calculateTotal()}</div>
                                     </div>
                                     { error && <div className="cart-overlay-error">An error occurred. Please try again.</div> }
                                     <button className="cart-overlay-checkout-button" onClick={

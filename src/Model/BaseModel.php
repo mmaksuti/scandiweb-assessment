@@ -2,8 +2,7 @@
 
 namespace App\Model;
 
-abstract class BaseModel {
+abstract class BaseModel
+{
     protected $autoId;
 }
-
-?>

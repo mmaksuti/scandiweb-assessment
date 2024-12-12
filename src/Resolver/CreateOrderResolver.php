@@ -3,9 +3,7 @@
 namespace App\Resolver;
 
 use GraphQL\Type\Definition\ResolveInfo;
-
 use App\Resolver\IResolver;
-
 use App\Model\Order;
 use App\Model\Currency;
 use App\Model\Product;
@@ -14,8 +12,10 @@ use App\Model\ChosenAttribute;
 use App\Model\AttributeSet;
 use App\Model\Attribute;
 
-class CreateOrderResolver implements IResolver {
-    public function resolve($rootValue, array $args, $context, ResolveInfo $info) {
+class CreateOrderResolver implements IResolver
+{
+    public function resolve($rootValue, array $args, $context, ResolveInfo $info)
+    {
         $entityMananger = $context;
 
         $order = new Order();
@@ -27,7 +27,7 @@ class CreateOrderResolver implements IResolver {
 
         $currency = $entityMananger->getRepository(Currency::class)
             ->findOneBy(['label' => $createOrderInput['currency']]);
-        
+
         if ($currency == null) {
             throw new \Exception('Currency not found: ' . $createOrderInput['currency']);
         }
@@ -45,10 +45,10 @@ class CreateOrderResolver implements IResolver {
             }
 
             $prices = $product->getPrices();
-            $price = $prices->filter(function($price) use ($currency) {
+            $price = $prices->filter(function ($price) use ($currency) {
                 return $price->getCurrency()->getLabel() == $currency->getLabel();
             })->first()->getAmount();
-            
+
             $quantity = $productInputs[$i]['quantity'];
             $chosenAttributes = $productInputs[$i]['chosenAttributes'];
 
@@ -68,7 +68,7 @@ class CreateOrderResolver implements IResolver {
                 $chosenAttribute->setAttributeSet($attributeSet)
                     ->setAttribute($attribute)
                     ->setOrderItem($orderItem);
-                
+
                 $orderItem->addChosenAttribute($chosenAttribute);
             }
 
@@ -77,9 +77,7 @@ class CreateOrderResolver implements IResolver {
 
         $entityMananger->persist($order);
         $entityMananger->flush();
-        
+
         return $order;
     }
 }
-
-?>

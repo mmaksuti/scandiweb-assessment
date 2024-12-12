@@ -4,7 +4,6 @@ namespace App\Model;
 
 use App\Model\BaseModel;
 use App\Model\Category;
-
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -15,7 +14,8 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 #[Entity]
 #[Table(name: 'GalleryItem')]
-class GalleryItem extends BaseModel {
+class GalleryItem extends BaseModel
+{
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
@@ -27,9 +27,8 @@ class GalleryItem extends BaseModel {
     #[JoinColumn(name: 'product_id', referencedColumnName: 'id')]
     private Product $product;
 
-    function getImageUrl(): string {
+    public function getImageUrl(): string
+    {
         return $this->imageUrl;
     }
 }
-
-?>

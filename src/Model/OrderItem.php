@@ -4,7 +4,6 @@ namespace App\Model;
 
 use App\Model\BaseModel;
 use App\Model\ChosenAttribute;
- 
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Id;
@@ -19,7 +18,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity]
 #[Table(name: 'OrderItem')]
-class OrderItem extends BaseModel {
+class OrderItem extends BaseModel
+{
     #[Id]
     #[Column(name: 'id'), GeneratedValue]
     protected $autoId;
@@ -41,59 +41,68 @@ class OrderItem extends BaseModel {
     #[OneToMany(targetEntity: ChosenAttribute::class, mappedBy: 'orderItem', cascade: ['persist', 'remove'])]
     private Collection $chosenAttributes;
 
-    function __construct() {
+    public function __construct()
+    {
         $this->chosenAttributes = new ArrayCollection();
     }
 
-    function getOrder(): Order {
+    public function getOrder(): Order
+    {
         return $this->order;
     }
 
-    function getProduct(): Product {
+    public function getProduct(): Product
+    {
         return $this->product;
     }
 
-    function getQuantity(): int {
+    public function getQuantity(): int
+    {
         return $this->quantity;
     }
 
-    function getTotal(): float {
+    public function getTotal(): float
+    {
         return $this->total;
     }
 
-    function getChosenAttributes(): Collection {
+    public function getChosenAttributes(): Collection
+    {
         return $this->chosenAttributes;
     }
-    
-    function setOrder(Order $order): OrderItem {
+
+    public function setOrder(Order $order): OrderItem
+    {
         $this->order = $order;
 
         return $this;
     }
 
-    function setProduct(Product $product): OrderItem {
+    public function setProduct(Product $product): OrderItem
+    {
         $this->product = $product;
 
         return $this;
     }
 
-    function setQuantity(int $quantity): OrderItem {
+    public function setQuantity(int $quantity): OrderItem
+    {
         $this->quantity = $quantity;
 
         return $this;
     }
 
-    function setTotal(float $total): OrderItem {
+    public function setTotal(float $total): OrderItem
+    {
         $this->total = $total;
 
         return $this;
     }
 
-    function addChosenAttribute(ChosenAttribute $chosenAttribute): OrderItem {
+    public function addChosenAttribute(ChosenAttribute $chosenAttribute): OrderItem
+    {
         $this->chosenAttributes->add($chosenAttribute);
 
         return $this;
     }
 }
-
-?>

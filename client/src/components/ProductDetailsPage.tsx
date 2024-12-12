@@ -18,6 +18,7 @@ import { Attribute } from '../models/Attribute';
 import { Price } from '../models/Price';
 import { cartContext } from '../App';
 import { CartContext } from '../models/CartContext';
+import { ChosenAttributes } from '../models/CartItem';
 
 interface IProductDetailsPageProps extends QueryResult<any> {}
 
@@ -26,7 +27,7 @@ interface IProductDetailsPageState {
     isScrollAtBottom: boolean;
     selectedImageIndex: number;
     hoveredImageIndex: number;
-    selectedAttributes: {[attributeSetId: string]: string};
+    selectedAttributes: ChosenAttributes;
 }
 
 class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProductDetailsPageState> {
@@ -146,14 +147,32 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
         return parse(cleanHTML);
     }
 
+    shouldAddToCartBeDisabled(product: Product) {
+        if (!product.inStock) {
+            return true;
+        }
+
+        for (const attributeSet of product.attributes) {
+            if (this.state.selectedAttributes[attributeSet.id] === undefined) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     getAttributes(attributeSet: AttributeSet) {
         if (attributeSet.type === 'text') {
             return (
                 <div className="attribute-values-text">
                     {attributeSet.items.map((item: Attribute) => {
+                        const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
+                        const kebabCaseAttributeName = item.value.replace(/ /g, '-');
+
                         return (
                             <div key={item.id}
                                 className={`text-attribute ${this.state.selectedAttributes[attributeSet.id] === item.id ? 'selected' : ''}`}
+                                data-testid={`product-attribute-${kebabCaseAttributeSetName}-${kebabCaseAttributeName}`}
                                 onClick={() =>
                                     this.setState({
                                         selectedAttributes: {
@@ -173,9 +192,13 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
             return (
                 <div className="attribute-values-swatch">
                     {attributeSet.items.map((item: Attribute) => {
+                        const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
+                        const kebabCaseAttributeName = item.value.replace(/ /g, '-');
+
                         return (
                             <div key={item.id}
                                 className={`swatch-attribute ${this.state.selectedAttributes[attributeSet.id] === item.id ? 'selected' : ''}`}
+                                data-testid={`product-attribute-${kebabCaseAttributeSetName}-${kebabCaseAttributeName}`}
                                 style={{
                                     backgroundColor: item.value, 
                                 }}
@@ -198,12 +221,14 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
 
     getAttributeSets(product: Product) {
         return product.attributes.map((attributeSet: AttributeSet) => {
-            if (this.state.selectedAttributes[attributeSet.id] === undefined && attributeSet.items.length > 0) {
-                this.state.selectedAttributes[attributeSet.id] = attributeSet.items[0].id;
-            }
+            // if (this.state.selectedAttributes[attributeSet.id] === undefined && attributeSet.items.length > 0) {
+            //     this.state.selectedAttributes[attributeSet.id] = attributeSet.items[0].id;
+            // }
+
+            const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
 
             return (
-                <div key={attributeSet.id} className="product-attribute">
+                <div key={attributeSet.id} className="product-attribute" data-testid={`product-attribute-${kebabCaseAttributeSetName}`}>
                     <div className="product-attribute-name">{attributeSet.name}:</div>
                     {
                         this.getAttributes(attributeSet)
@@ -258,7 +283,7 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                         onClick={() => this.handleScroll('down')}
                     />
                 </div>
-                <div className="product-gallery-carousel">
+                <div className="product-gallery-carousel" data-testid='product-gallery'>
                     <img 
                         src={arrowLeft} 
                         className={`arrow-left ${product.gallery.length <= 1 ? 'disabled' : ''}`}
@@ -289,7 +314,10 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                         <div className="product-price-label">Price:</div>
                         <div className="product-price-amount">{price.currency.symbol}{price.amount}</div>
                     </div>
-                    <button className={`add-to-cart-button ${!product.inStock ? 'disabled' : ''}`} onClick={
+                    <button data-testid='add-to-cart'
+                        disabled={this.shouldAddToCartBeDisabled(product)}
+                        className={`add-to-cart-button ${this.shouldAddToCartBeDisabled(product) ? 'disabled' : ''}`}
+                        onClick={
                         () => {
                             if (context) {
                                 context.cart.addItem(product, this.state.selectedAttributes);
@@ -297,7 +325,7 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                             }
                         }
                     }>Add to Cart</button>
-                    <div className="product-details-description">{this.purifyAndParseHTML(product.description)}</div>
+                    <div data-testid='product-description' className="product-details-description">{this.purifyAndParseHTML(product.description)}</div>
                 </div>
             </div>
         );
