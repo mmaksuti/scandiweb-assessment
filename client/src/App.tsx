@@ -51,7 +51,8 @@ class App extends React.Component<any, CartState> {
                     setCart: (cart: Cart) => {
                         this.setState({ cart: cart });
                         localStorage.setItem('cart', JSON.stringify(cart));
-                    }
+                    },
+                    showOverlay: () => {}
                 }
             }>
                 <ApolloProvider client={client}>

@@ -23,19 +23,6 @@ class Header extends React.Component<any, IHeaderState> {
         }
     }
 
-    // componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<IHeaderState>, snapshot?: any): void {
-    //     if (this.oldNumberOfCartItems.current !== this.context.cart.getNumberOfItems()) {
-    //         if (this.oldNumberOfCartItems !== -1) {
-    //             this.setState({
-    //                 showCartOverlay: true
-    //             });
-    //         }
-    //         this.setState({
-    //             oldNumberOfCartItems: this.context.cart.getNumberOfItems()
-    //         });
-    //     }
-    // }
-
     render() {
         return (
             <cartContext.Consumer>
@@ -45,10 +32,12 @@ class Header extends React.Component<any, IHeaderState> {
                         if (context) {
                             const cart = context.cart;
                             numberOfCartItems = cart.getNumberOfItems();
-                            // this.oldNumberOfCartItems.
-                            // set old = new
                             if (this.oldNumberOfCartItems === null) {
                                 this.oldNumberOfCartItems = numberOfCartItems;
+                            }
+
+                            context.showOverlay = () => {
+                                this.setState({showCartOverlay: true});
                             }
                         }
                     
@@ -79,22 +68,7 @@ class Header extends React.Component<any, IHeaderState> {
                                         )}
                                     </button>
                                     <CartOverlay
-                                        // disabled={!this.state.showCartOverlay}
-                                        disabled={
-                                            (() => {
-                                                // console.log('oldNumberOfCartItems', this.oldNumberOfCartItems, 'numberOfCartItems', numberOfCartItems);
-                                                if (this.oldNumberOfCartItems !== numberOfCartItems && this.oldNumberOfCartItems !== null) {
-                                                    this.oldNumberOfCartItems = numberOfCartItems;
-
-                                                    if (numberOfCartItems === 0) {
-                                                        return true;
-                                                    }
-                                                    return false;
-                                                }
-
-                                                return !this.state.showCartOverlay
-                                            })()
-                                        }
+                                        disabled={!this.state.showCartOverlay}
                                         hideOverlay={() => this.setState({showCartOverlay: false})}
                                     />
                                 </div>

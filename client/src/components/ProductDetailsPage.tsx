@@ -162,65 +162,46 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
     }
 
     getAttributes(attributeSet: AttributeSet) {
-        if (attributeSet.type === 'text') {
-            return (
-                <div className="attribute-values-text">
-                    {attributeSet.items.map((item: Attribute) => {
-                        const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
-                        const kebabCaseAttributeName = item.value.replace(/ /g, '-');
+        return (
+            <div className={`attribute-values-${attributeSet.type}`}>
+                {attributeSet.items.map((item: Attribute) => {
+                    const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
+                    const kebabCaseAttributeName = item.value.replace(/ /g, '-');
 
-                        return (
-                            <div key={item.id}
-                                className={`text-attribute ${this.state.selectedAttributes[attributeSet.id] === item.id ? 'selected' : ''}`}
-                                data-testid={`product-attribute-${kebabCaseAttributeSetName}-${kebabCaseAttributeName}`}
-                                onClick={() =>
-                                    this.setState({
-                                        selectedAttributes: {
-                                            ...this.state.selectedAttributes,
-                                            [attributeSet.id]: item.id
-                                        }
-                                    })
-                                }
-                            >
-                                {item.value}
-                            </div>
-                        );
-                    })}
-                </div>
-            );
-        } else if (attributeSet.type === 'swatch') {
-            return (
-                <div className="attribute-values-swatch">
-                    {attributeSet.items.map((item: Attribute) => {
-                        const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
-                        const kebabCaseAttributeName = item.value.replace(/ /g, '-');
-
-                        return (
-                            <div key={item.id}
-                                className={`swatch-attribute ${this.state.selectedAttributes[attributeSet.id] === item.id ? 'selected' : ''}`}
-                                data-testid={`product-attribute-${kebabCaseAttributeSetName}-${kebabCaseAttributeName}`}
-                                style={{
-                                    backgroundColor: item.value, 
-                                }}
-                                onClick={() =>
-                                    this.setState({
-                                        selectedAttributes: {
-                                            ...this.state.selectedAttributes,
-                                            [attributeSet.id]: item.id
-                                        }
-                                    })
-                                }
-                            >
-                            </div>
-                        );
-                    })}
-                </div>
-            );
-        }
+                    return (
+                        <div key={item.id}
+                            className={
+                                `${attributeSet.type}-attribute
+                                ${this.state.selectedAttributes[attributeSet.id] === item.id
+                                    ? 'selected'
+                                    : ''
+                                }`
+                            }
+                            data-testid={`product-attribute-${kebabCaseAttributeSetName}-${kebabCaseAttributeName}`}
+                            style={attributeSet.type === 'swatch' ? {
+                                backgroundColor: item.value, 
+                            } : {}}
+                            onClick={() =>
+                                this.setState({
+                                    selectedAttributes: {
+                                        ...this.state.selectedAttributes,
+                                        [attributeSet.id]: item.id
+                                    }
+                                })
+                            }
+                        >
+                            {attributeSet.type === 'text' ? item.value : ''}
+                        </div>
+                    );
+                })}
+            </div>
+        );
     }
 
     getAttributeSets(product: Product) {
         return product.attributes.map((attributeSet: AttributeSet) => {
+            // this code adds a default selected attribute for each attribute set
+
             // if (this.state.selectedAttributes[attributeSet.id] === undefined && attributeSet.items.length > 0) {
             //     this.state.selectedAttributes[attributeSet.id] = attributeSet.items[0].id;
             // }
@@ -228,7 +209,10 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
             const kebabCaseAttributeSetName = attributeSet.name.replace(/ /g, '-').toLowerCase();
 
             return (
-                <div key={attributeSet.id} className="product-attribute" data-testid={`product-attribute-${kebabCaseAttributeSetName}`}>
+                <div key={attributeSet.id}
+                    className="product-attribute"
+                    data-testid={`product-attribute-${kebabCaseAttributeSetName}`}
+                >
                     <div className="product-attribute-name">{attributeSet.name}:</div>
                     {
                         this.getAttributes(attributeSet)
@@ -266,7 +250,13 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                                     key={image} 
                                     src={image} 
                                     alt={product.name} 
-                                    className={`product-gallery-preview ${this.state.selectedImageIndex === product.gallery.indexOf(image) ? 'selected' : ''}`}
+                                    className={
+                                        `product-gallery-preview
+                                        ${this.state.selectedImageIndex === product.gallery.indexOf(image)
+                                            ? 'selected'
+                                            : ''
+                                        }`
+                                    }
                                     onClick={() => 
                                         this.setState({
                                             selectedImageIndex: product.gallery.indexOf(image)
@@ -283,7 +273,9 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                         onClick={() => this.handleScroll('down')}
                     />
                 </div>
-                <div className="product-gallery-carousel" data-testid='product-gallery'>
+                <div className="product-gallery-carousel"
+                    data-testid='product-gallery'
+                >
                     <img 
                         src={arrowLeft} 
                         className={`arrow-left ${product.gallery.length <= 1 ? 'disabled' : ''}`}
@@ -322,10 +314,13 @@ class ProductDetailsPage extends React.Component<IProductDetailsPageProps, IProd
                             if (context) {
                                 context.cart.addItem(product, this.state.selectedAttributes);
                                 context.setCart(context.cart);
+                                context.showOverlay();
                             }
                         }
                     }>Add to Cart</button>
-                    <div data-testid='product-description' className="product-details-description">{this.purifyAndParseHTML(product.description)}</div>
+                    <div data-testid='product-description'
+                        className="product-details-description">{this.purifyAndParseHTML(product.description)}
+                    </div>
                 </div>
             </div>
         );

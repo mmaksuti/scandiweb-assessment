@@ -6,7 +6,6 @@ import { Price } from "../models/Price";
 import { NavLink } from "react-router-dom";
 import { CartContext } from "../models/CartContext";
 import { cartContext } from "../App";
-import { AttributeSet } from "../models/AttributeSet";
 
 type IProductCardProps = {
     product: Product;
@@ -40,27 +39,39 @@ class ProductCard extends React.Component<IProductCardProps> {
                             <div className="product-card" data-testid={`product-${kebabCaseProductName}`}>
                                 <NavLink className="product-card-link" to={"/details/" + id}>
                                     <div className="product-thumbnail-container">
-                                        <img className={inStock ? "product-thumbnail" : "product-thumbnail out-of-stock-thumbnail"} src={gallery[0]}/>
-                                        { inStock ?
-                                            <div className="quick-shop-button" onClick={(e) => {
+                                        <img className={
+                                            inStock
+                                                ? "product-thumbnail"
+                                                : "product-thumbnail out-of-stock-thumbnail"
+                                            }
+                                            src={gallery[0]}
+                                        />
+                                        { inStock
+                                            ? <div className="quick-shop-button" onClick={(e) => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
 
                                                 if (context) {
                                                     context.cart.addItem(product);
                                                     context.setCart(context.cart);
+                                                    context.showOverlay();
                                                 }
                                             }}>
                                                 <img src={quickShopIcon} className="quick-shop-icon"/>
                                             </div>
-                                        :
-                                            <div className="out-of-stock-overlay">
+                                            : <div className="out-of-stock-overlay">
                                                 OUT OF STOCK
                                             </div>
                                         }
                                     </div>
                                     <div className="product-name">{name}</div>
-                                    <div className={inStock ? "product-price" : "product-price out-of-stock-price"}>{currency.symbol}{price.amount}</div>
+                                    <div className={
+                                        inStock
+                                            ? "product-price"
+                                            : "product-price out-of-stock-price"
+                                    }>
+                                            {currency.symbol}{price.amount}
+                                    </div>
                                 </NavLink>
                             </div>
                         );

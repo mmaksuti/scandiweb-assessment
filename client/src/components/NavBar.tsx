@@ -22,10 +22,6 @@ class NavBar extends React.Component<QueryResult<any>> {
         }
     }
 
-    // componentDidUpdate() {
-    //     this.addDataTestId();
-    // }
-
     setupObserver() {
         const nav = this.navRef.current;
         if (nav) {
@@ -69,7 +65,12 @@ class NavBar extends React.Component<QueryResult<any>> {
             return (
                 <li key={category.name} className="nav-category">
                     <NavLink ref={linkRef} to={"/" + category.name.toLowerCase()}
-                        className={({ isActive }: { isActive: boolean }) => isActive || (category.name === "all" && window.location.pathname === "/") ? 'navlink active' : 'navlink'}
+                        className={({ isActive }: { isActive: boolean }) =>
+                            isActive ||
+                            (category.name === "all" &&
+                                window.location.pathname === "/"
+                            )
+                            ? 'navlink active' : 'navlink'}
                     >
                         {category.name}
                     </NavLink>
